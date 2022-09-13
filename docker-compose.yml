@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=Clara03cmc*
+      - DB=kimoveis
+      - DB_USER=postgres
+      - SECRET_KEY=kimoveis3564*
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+  
+  db:
+    container_name: db
+    image: postgres:14
+    ports:
+      - 5431:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Clara03cmc*
+      - POSTGRES_DB=kimoveis
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kimoveis"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+   
+
